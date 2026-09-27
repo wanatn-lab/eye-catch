@@ -396,10 +396,15 @@ var state = {
   ended: false
 };
 function curLevel(){ return LEVELS[state.order[state.levelIndex]]; }
-/* levels are authored easy -> hard in array order, so play them in that
-   fixed order instead of shuffling, or the difficulty curve is pointless */
+/* levels are authored easy -> hard in array order, so within a playthrough
+   they still run in that relative order (and the difficulty curve stays
+   intact) - but which level KICKS OFF the session is picked at random each
+   time, wrapping back around to the start of the array, so the player
+   doesn't see the exact same opening photo on every visit. */
 function sequentialOrder(n){
-  var arr = []; for (var i=0;i<n;i++) arr.push(i);
+  var start = Math.floor(Math.random() * n);
+  var arr = [];
+  for (var i=0;i<n;i++) arr.push((start + i) % n);
   return arr;
 }
 
